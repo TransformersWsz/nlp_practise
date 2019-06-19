@@ -1,0 +1,53 @@
+#-*- coding: utf-8 -*-
+
+from numpy import *
+import random
+import math
+
+
+class Document(object):
+	def __init__(self,polarity,words):
+		self.polarity=polarity
+		self.words=words
+
+#读文件
+def readFromFile(path,polarity):
+	input=open(path,'rb')
+	documents=[]
+	for line in input:
+		pieces=set(line,split())
+		words={}
+		for piece in pieces:
+			words[piece]=words.get(piece,0)+1
+		if len(words)>0:
+			documents.append(Document(polarity,words))
+	return documents
+
+def creatDomain():
+	pos=readFromFile(r'D:\SUDA\corpus\movie\positive.review',True)
+	neg=readFromFile(r'D:\SUDA\corpus\movie\positive.review',True)
+	return pos,neg
+
+#创建一个包含所有文档中出现的不重复的词的列表
+def creatVocabList(dataSet):
+	vocabSet=set([])
+	for doc in dataSet:
+		vocabSet=vocabSet | set(doc)#将新词集合添加到创建的集合中，并求并集
+	return list(vocabSet)#返回一个包含所有文档中出现的不重复的词
+
+#词表到向量的转换
+def setOfWords2Vec(vocabLsit,inputSet):#参数为所有不重复的词，输入文档
+	returnVec=[0]*len(vocabLsit)#创建一个与词汇表等长的向量，并设为0
+	for word in inputSet:
+		if word in vocabLsit:
+			returnVec[vocabLsit.index(word)]+=1
+	return returnVec
+
+#朴素贝叶斯分类训练器，计算每个类的类别以及类别下特征的条件概率
+def train
+
+
+
+if __name__=='__main__':
+	domain=creatDomain()
+

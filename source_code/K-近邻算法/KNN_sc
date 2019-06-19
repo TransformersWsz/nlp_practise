@@ -1,0 +1,86 @@
+#-*- coding: utf-8 -*-
+
+import math #提供了很多对浮点数和数字的运算函数
+import time
+
+
+
+#求相似度的算法
+def cos(source,target):
+	numerator = sum(source[word]*target[word] for  word in source if word in target)#向量内积
+	sourceLen = math.sqrt(sum([value*value for value in source.values()]))#求原文件向量中的模
+	targetLen = math.sqrt(sum([value*value for value in target.values()]))#求目标文件向量中的模
+
+	denominator = sourceLen*targetLen#将模的乘积放在变量中
+	if denominator==0:
+		return 0
+	else:
+		return numerator / denominator # 返回cos的值即向量内积/模的乘积
+
+#求相似度矩阵
+def similarVector(trains,tests):
+	trainLen=len(trains)
+	testsLen=len(tests)
+	simVector={}#字典中存放测试样本与训练样本的相似矩阵，键为测试样本的文件序号
+	for testId in range(testsLen):
+		cosineList=[]
+		for trainId in range(trainLen):
+			cosine=cos(trains[trainId].words,tests[testId].words)
+			cosineList.append((cosine,trainId))#列表里存放相似度以及训练样本的编号
+		cosineList.sort(reverse=True)#按照正序排序，否则是逆序
+		simVector[testId]=cosineList#排序后的存放在相似度矩阵中
+	return simVector#返回存放相似度矩阵的字典
+
+#K近邻算法情感分类
+
+def classify0(trains,tests,k):
+	simVector=similarVector(trains,tests)#字典中存放测试样本与训练样本的相似矩阵
+	sumAccurate=0 #正确率
+	for i in range(len(tests)):#测试集长度开始循序
+		sumPositive=0 #positive的极性总数
+		sumNegative=0 #negative的极性总数
+		for flag in range(k):#取前K个训练样本文件，并统计极性
+			index=simVector[i][flag][1]#将测试集与训练集前K个相似度矩阵的第二个元素，序号给index
+			if trains[index].polarity:
+				sumPositive+=1# 如果该文件序号的极性为正就把正性+1
+			else:
+				sumNegative+=1#否则就是负的+1
+		if sumPositive > sumNegative:#如果正的>负的
+			if tests[i].polarity:#并且该测试集极性为正，说明正确，正确率+1
+				sumAccurate+=1
+		else:
+			if not tests[i].polarity:#否则正的小于负的，并且该序号的极性也是负的。就正确
+				sumAccurate+=1
+
+	acc=sumAccurate/len(tests) #计算正确率
+	print("\nthe accuracy is :%.2f"%(acc*100)+"%")
+
+
+class Document(object):
+	def __init__(self,polarity,words):
+		self.polarity=polarity
+		self.words=words
+
+#从指定路径的文件中读取文档信息，并指明文件代表的极性
+def readFromFile(path,polarity):
+	input=open(path,'rb')
+	documents = []#文档列表即文档
+	for line in input:
+		pieces=set(line.split())
+		words={}#文件中的单词对应的词频度
+		for piece in pieces:
+			words[piece]=words.get(piece,0)+1
+		if len(words)>0:
+			documents.append(Document(polarity,words))#通过词频度和极性构造文档，并存入文档列表
+	return documents#返回一个列表
+
+def createDomain():
+	pos=readFromFile(r'D:\SUDA\corpus\movie\positive.review',True)#不转义
+	neg=readFromFile(r'D:\SUDA\corpus\movie\negative.review',False)
+	return pos,neg#返回的两个列表正的是1，负的是0
+
+if __name__=='__main__':
+	domain=createDomain()#将两个列表都放到一个里面
+	trains=domain[0][50:]+domain[1][50:]#训练集选择正的1000+负的1000
+	tests=domain[0][:50]+domain[1][:50] #测试集选择正的前200，负的前200
+	classify0(trains,tests,15)
