@@ -26,4 +26,4 @@ def splitFile(output_path,result_path):
 #======================================================================
 if __name__ == '__main__' :
 	subprocess.call("crfcmd.bat",shell = True)
-	splitFile("output.txt","result.txt")
+	splitFile("output.txt", "result.txt")
