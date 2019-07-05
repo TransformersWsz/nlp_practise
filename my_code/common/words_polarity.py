@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-# @Time    : 2019/6/20 15:40
+# @Time    : 2019/7/5 10:11
 # @Author  : Swift  
 # @File    : words_polarity.py
-# @Brief   : Sentence Object
+# @Brief   : Common Object
 # @Link    : https://github.com/TransformersWsz/nlp_practise
 
 

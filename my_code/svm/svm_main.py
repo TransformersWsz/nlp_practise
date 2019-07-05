@@ -6,7 +6,7 @@
 # @Link    : https://github.com/TransformersWsz/nlp_practise
 
 
-from my_code.svm.words_polarity import Sentence
+from my_code.common.words_polarity import Sentence
 from sklearn import svm
 
 
@@ -15,9 +15,9 @@ class SVM(object):
     def __init__(self):
         pass
 
-    def read_file(self, filename: str, line_dict: dict, polarity: bool) -> list:
+    def read_file(self, file_path: str, line_dict: dict, polarity: bool) -> list:
         sentences = []
-        with open(filename, "r") as f:
+        with open(file_path, "r") as f:
             for line in f:
                 pieces = line.split()
                 for piece in pieces:
@@ -77,4 +77,3 @@ if __name__ == "__main__":
 
     # print(len(train[0][1]), "\n", train[1][1], len(test[0][1]), "\n", test[1][1])
     # print(solution.classify(train, test))
-

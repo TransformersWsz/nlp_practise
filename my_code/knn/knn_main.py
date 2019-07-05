@@ -6,7 +6,7 @@
 # @Link    : https://github.com/TransformersWsz/nlp_practise
 
 
-from my_code.knn.words_polarity import Sentence
+from my_code.common.words_polarity import Sentence
 
 
 class KNN(object):
@@ -14,12 +14,12 @@ class KNN(object):
     def __init__(self):
         pass
 
-    def read_file(self, filename: str, polarity: bool) -> list:
+    def read_file(self, file_path: str, polarity: bool) -> list:
         sentences = []
 
-        with open(filename, "r") as f:
+        with open(file_path, "r") as f:
             for line in f:
-                pieces = line.split()
+                pieces = line.strip().split()
                 words = {}
 
                 for piece in pieces:
@@ -27,9 +27,9 @@ class KNN(object):
                 sentences.append(Sentence(words, polarity))
         return sentences
 
-    def get_sentences(self, positive_filename: str, negative_filename: str) -> tuple:
-        positive_sentences = self.read_file(positive_filename, True)
-        negative_sentences = self.read_file(negative_filename, False)
+    def get_sentences(self, positive_filepath: str, negative_filepath: str) -> tuple:
+        positive_sentences = self.read_file(positive_filepath, True)
+        negative_sentences = self.read_file(negative_filepath, False)
         return positive_sentences, negative_sentences
 
     def cos_between_sentences(self, first_sentence: Sentence, senond_sentence: Sentence) -> float:
