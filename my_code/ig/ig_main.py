@@ -9,6 +9,7 @@
 import numpy as np
 from my_code.common.words_polarity import Sentence
 
+
 class IG(object):
     """
     IG算法的具体讲解见：
@@ -74,7 +75,7 @@ class IG(object):
                 polarity_matrix[i] = 1
         return polarity_matrix
 
-    def get_total_entropy(self, polarity_matrix: np.array) -> tuple:
+    def get_total_entropy(self, polarity_matrix: np.ndarray) -> tuple:
         """计算整体熵"""
         pc1 = np.sum(polarity_matrix) / len(polarity_matrix)    # pc1: postive
         return pc1, -1*pc1*np.log2(pc1) - (1-pc1)*np.log2(1-pc1)
@@ -128,8 +129,6 @@ class IG(object):
         P2 = - PTne * (PT_C1ne * log_PT_C1ne + PT_C0ne * log_PT_C0ne)
 
         return P1 + P2
-
-
 
 
 if __name__ == "__main__":
