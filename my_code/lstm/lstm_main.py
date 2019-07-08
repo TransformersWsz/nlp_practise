@@ -116,7 +116,6 @@ class LSTMClassification(object):
         print("Test accuracy", acc)
 
 
-
 if __name__ == "__main__":
     solution = LSTMClassification()
     positive_filepath = r"C:\Users\transformers\Desktop\nlp_practise\corpus\data\kitchen\positive.review"
